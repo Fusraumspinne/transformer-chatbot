@@ -31,11 +31,12 @@ async function generate(messages: any[]) {
   const [tokenizer, model] = await TextGenerationPipeline.getInstance();
 
   const systemPrompt = {
-    role: 'system',
-    content: ''
+    role: "system",
+    content: `Du bist ein präzises, kreatives und sachkundiges KI-Sprachmodell. Antworte stets klar, strukturiert, kurz gefasst und faktenbasiert. Vermeide Spekulationen und gib an, wenn Informationen fehlen oder unklar sind. Bei technischen Fragen liefere vollständige, getestete Codebeispiele und erkläre diese verständlich. Bei Bedarf bitte um Klarstellung.`
   };
 
-  const messagesWithSystem = [systemPrompt, ...messages];
+  const userMessage = messages[messages.length - 1]; 
+  const messagesWithSystem = [systemPrompt, userMessage];
 
   const inputs = tokenizer.apply_chat_template(messagesWithSystem, {
     add_generation_prompt: true,
@@ -69,7 +70,7 @@ async function generate(messages: any[]) {
   const { past_key_values, sequences } = await model.generate({
     ...inputs,
     do_sample: false,
-    max_new_tokens: 512,
+    max_new_tokens: 1024,
     streamer,
     stopping_criteria,
     return_dict_in_generate: true,
