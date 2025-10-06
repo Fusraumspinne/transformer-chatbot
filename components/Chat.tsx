@@ -23,7 +23,7 @@ export default function Chat({ messages }: { messages: Message[] }) {
               <>
                 <div className="h-6 w-6 min-h-6 min-w-6 my-3 text-gray-200" />
                 <div className="bg-gray-900 border border-blue-950 rounded-4xl p-4">
-                  <div className="min-h-6 text-gray-200 overflow-wrap-anywhere">
+                  <div className="min-h-6 text-gray-800 dark:text-gray-200 overflow-wrap-anywhere">
                     {msg.content.length > 0 ? (
                       <ReactMarkdown>{msg.content}</ReactMarkdown>
                     ) : (
@@ -39,7 +39,7 @@ export default function Chat({ messages }: { messages: Message[] }) {
             ) : (
               <>
                 <div className="h-6 w-6 min-h-6 min-w-6 my-3 text-gray-200" />
-                <div className="bg-blue-950 text-gray-200 rounded-4xl p-4">
+                <div className="bg-blue-950 text-grey-200 rounded-4xl p-4">
                   <p className="min-h-6 overflow-wrap-anywhere">{msg.content}</p>
                 </div>
               </>

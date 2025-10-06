@@ -32,10 +32,10 @@ async function generate(messages: any[]) {
 
   const systemPrompt = {
     role: "system",
-    content: `Du bist ein präzises, kreatives und sachkundiges KI-Sprachmodell. Antworte stets klar, strukturiert, kurz gefasst und faktenbasiert. Vermeide Spekulationen und gib an, wenn Informationen fehlen oder unklar sind. Bei technischen Fragen liefere vollständige, getestete Codebeispiele und erkläre diese verständlich. Bei Bedarf bitte um Klarstellung.`,
+    content: `Du bist ein präzises, kreatives und sachkundiges KI-Sprachmodell. Antworte stets klar, strukturiert, kurz gefasst und faktenbasiert. Vermeide Spekulationen und gib an, wenn Informationen fehlen oder unklar sind. Bei technischen Fragen liefere vollständige, getestete Codebeispiele und erkläre diese verständlich. Bei Bedarf bitte um Klarstellung.`
   };
 
-  const userMessage = messages[messages.length - 1];
+  const userMessage = messages[messages.length - 1]; 
   const messagesWithSystem = [systemPrompt, userMessage];
 
   const inputs = tokenizer.apply_chat_template(messagesWithSystem, {
@@ -80,17 +80,13 @@ async function generate(messages: any[]) {
     skip_special_tokens: true,
   });
 
-  // decoded ist ein Array; wir senden das als String (erste Sequenz) zurück.
-  const outputText = Array.isArray(decoded) ? decoded[0] : String(decoded);
-
-  (self as any).postMessage({ status: "complete", output: outputText });
+  (self as any).postMessage({ status: "complete", output: decoded });
 }
 
 async function check() {
   try {
     const adapter = await (navigator as any).gpu.requestAdapter();
     if (!adapter) throw new Error("WebGPU is not supported (no adapter found)");
-    (self as any).postMessage({ status: "check-ok" });
   } catch (e) {
     (self as any).postMessage({
       status: "error",
@@ -109,7 +105,7 @@ async function load() {
 
   (self as any).postMessage({
     status: "loading",
-    data: "Kompilieren von Shadern und Aufwärmen des Modells...",
+    data: "Kompilieren von Shadern und aufwärmen des Modells...",
   });
   const inputs = tokenizer("a");
   await model.generate({ ...inputs, max_new_tokens: 1 });
@@ -134,8 +130,6 @@ async function load() {
       break;
     case "reset":
       stopping_criteria.reset();
-      break;
-    default:
       break;
   }
 });
