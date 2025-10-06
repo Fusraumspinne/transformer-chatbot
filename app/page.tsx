@@ -45,6 +45,7 @@ export default function Page() {
   function onInterrupt() {
     if (!worker.current) return;
     worker.current.postMessage({ type: "interrupt" });
+    setIsRunning(false);
   }
 
   useEffect(() => {
@@ -116,12 +117,20 @@ export default function Page() {
           break;
         case "error":
           setError(d.data?.toString() || String(d));
+          setStatus(null);
+          setIsRunning(false);
+          break;
+        case "check-ok":
+          // optional: set a flag if needed
+          break;
+        default:
           break;
       }
     };
 
     const onErrorReceived = (e: Event) => {
       console.error("Worker error:", e);
+      setError("Worker error - siehe Konsole");
     };
 
     if (worker.current) {
